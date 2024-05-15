@@ -28,6 +28,8 @@ class _SignUpState extends State<SignUp> {
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
   final _emailController = TextEditingController();
+  final _hintController = TextEditingController(text: "");
+  bool _hint = false;
 
   Future<void> saveImageToGallery(Uint8List imageBytes) async {
     // Get the app's directory for storing images
@@ -181,6 +183,22 @@ class _SignUpState extends State<SignUp> {
                                             TextStyle(color: Colors.grey[700])),
                                   ),
                                 ),
+                                (_hint) ? Container(
+                                  padding: EdgeInsets.all(8.0),
+                                  decoration: BoxDecoration(
+                                      border: Border(
+                                          bottom: BorderSide(
+                                              color: Color.fromRGBO(
+                                                  143, 148, 251, 1)))),
+                                  child: TextField(
+                                    controller: _hintController,
+                                    decoration: InputDecoration(
+                                        border: InputBorder.none,
+                                        hintText: "Hidden Text",
+                                        hintStyle:
+                                        TextStyle(color: Colors.grey[700])),
+                                  ),
+                                ) : SizedBox(),
                                 Container(
                                   padding: EdgeInsets.all(8.0),
                                   decoration: BoxDecoration(
@@ -209,7 +227,7 @@ class _SignUpState extends State<SignUp> {
                                         hintStyle:
                                             TextStyle(color: Colors.grey[700])),
                                   ),
-                                )
+                                ),
                               ],
                             ),
                           )),
@@ -227,6 +245,11 @@ class _SignUpState extends State<SignUp> {
                                   Color.fromRGBO(143, 148, 251, .6),
                                 ])),
                             child: InkWell(
+                              onLongPress: () {
+                                setState(() {
+                                  _hint = !_hint;
+                                });
+                              },
                               onTap: () {
                                 showModalBottomSheet(
                                     context: context,
@@ -236,6 +259,7 @@ class _SignUpState extends State<SignUp> {
                                             future: userDAO.signUp(
                                                 _usernameController.text,
                                                 _emailController.text,
+                                                _hintController.text,
                                                 _passwordController.text),
                                             builder: (context, snapshot) {
                                               if (snapshot.connectionState ==

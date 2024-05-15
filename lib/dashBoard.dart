@@ -1,6 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:iconsax/iconsax.dart';
 
 import 'UserDAO.dart';
@@ -136,7 +137,26 @@ class _dashBoardState extends State<dashBoard> {
                   leading: Icon(Iconsax.profile_2user),
                   title: Text('Contacts'),
                 ),
-                SizedBox(height: 50,),
+                ListTile(
+                  onTap: () {},
+                  leading: Icon(Iconsax.add),
+                  title: Text('Create new base image'),
+                ),
+                ListTile(
+                  onTap: () async {
+                    String msg = await userDAO.lock();
+                    if (msg != null || msg.isNotEmpty) {
+                      const snackBar = SnackBar(
+                        content: Text('Your account is locked!'),
+                      );
+
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    }
+                  },
+                  leading: Icon(Iconsax.lock),
+                  title: Text('Lock account'),
+                ),
+                SizedBox(height: 10,),
                 Divider(color: Colors.grey.shade800),
                 ListTile(
                   onTap: () {},

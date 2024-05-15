@@ -322,12 +322,12 @@ class _PaymentState extends State<Payment> {
             Center(
               child: InkWell(
                 onTap: () async {
-                  if (await userDao.login(
-                      _emailController.text, _passwordController.text)) {
-                    setState(() {
-                      _login = true;
-                    });
-                  }
+                  // if (await userDao.login(
+                  //     _emailController.text, _passwordController.text)) {
+                  //   setState(() {
+                  //     _login = true;
+                  //   });
+                  // }
                 },
                 child: Container(
                   decoration: BoxDecoration(

@@ -182,18 +182,26 @@ class _HomePageState extends State<HomePage> {
                         ),
                         child: InkWell(
                           onTap: () async {
-                            if (await userDAO.login(_emailController.text, _passwordController.text))
-                              {
-                                Navigator.of(context).pushAndRemoveUntil(
-                                  MaterialPageRoute(builder: (context) => dashBoard()),
-                                      (Route<dynamic> route) => false,
-                                );
-                              }
-                            else {
-                              const snackBar = SnackBar(
-                                content: Text('Email or password is wrong !'),
+                            String _msg = await userDAO.login(_emailController.text, _passwordController.text);
+                            print(_msg);
+                            if (_msg == "Failed")
+                              {const snackBar = SnackBar(
+                                content: Text('Your username or password was wrong'),
                               );
                               ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                              }
+                            else if (_msg == "Account is lock")
+                            {
+                              const snackBar = SnackBar(
+                                content: Text('Your account was lock!'),
+                              );
+                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                            }
+                            else {
+                              Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(builder: (context) => dashBoard()),
+                                    (Route<dynamic> route) => false,
+                              );
                             }
                           },
                           child: Center(

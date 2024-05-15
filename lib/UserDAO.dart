@@ -42,9 +42,9 @@ class UserDAO {
     }
   }
 
-  Future<Image> signUp(String username,String email,String password) async {
+  Future<Image> signUp(String username,String email,String hint,String password) async {
     String url =
-        "http://10.0.2.2:8000/signup?email=$email&name=$username&password=$password";
+        "http://10.0.2.2:8000/signup?email=$email&name=$username&password=$password&hint=$hint";
     final response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
       imageBytes = response.bodyBytes;
@@ -57,17 +57,30 @@ class UserDAO {
     }
   }
 
-  Future<bool> login(String email, String password) async {
+  Future<String> login(String email, String password) async {
     String url = "http://10.0.2.2:8000/login?email=$email&password=$password";
     final response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
       Map<String, dynamic> jsonData = jsonDecode(response.body);
       this.email = email;
       username = jsonData['message'];
-      return (jsonData['message'] != 'Failed');
+      return jsonData['message'];
     } else {
       // Error handling
       throw Exception('Failed to load image from the server');
     }
   }
+
+  Future<String> lock() async {
+    String url = "http://10.0.2.2:8000/lock";
+    final response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      Map<String, dynamic> jsonData = jsonDecode(response.body);
+      return jsonData['message'];
+    } else {
+      // Error handling
+      throw Exception('Failed to load image from the server');
+    }
+  }
+
 }
